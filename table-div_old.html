@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+    <style>
+    .row-box{display: -webkit-flex;display: flex;flex-direction:row;flex-wrap: nowrap;}
+    .col-box{display: -webkit-flex;display: flex;flex-direction:column;flex-wrap: nowrap;}
+    .flex1{flex:1 1 auto;}
+    .flex0{flex-shrink:0;}
+    .text-overflow{overflow: hidden;text-overflow: ellipsis;display: -webkit-box;white-space: nowrap;-webkit-line-clamp:2;-webkit-box-orient: vertical; }
+    body{width: 100%;/* text-align: center; */}
+
+    .table-container{width: 500px;border: 1px solid;overflow: hidden;}
+    .table-container>.table-div{position: relative;width: 100%;font-size: 0px;}
+    .table-div>.table-body{position: relative;width: 100%;}
+    .table-body>.col{display: inline-block;text-align: left;}
+    .table-body>.col>.th span, .table-body>.col>.td span{font-size: 14px;}
+    .table-body>.col:first-child{min-width: 10%;}
+    .table-body>.col:nth-child(2){min-width: 10%;}
+    .table-body>.col:nth-child(3){min-width: 10%;}
+    .table-body>.col:nth-child(4){min-width: 10%;}
+    .table-body>.col:last-child{min-width: 10%;}
+    .table-body>.col>.th{position: relative;padding:5px 10px;border-right: 1px solid;border-bottom: 1px solid;font-size: 18px;font-weight: 600;}
+    .table-body>.col>.td{position: relative;padding:5px 10px;border-right: 1px solid;border-bottom: 1px solid;font-size: 14px;}
+    .table-body>.col>.td>.td-div{font-size: 0px;}
+    .table-body>.col>.td>.td-div span{font-size: 14px;}
+    .table-body>.col>.td>.td-div span.text-overflow{width: 100%;display: inline-block;}
+    .table-body>.col>.td:hover{cursor: pointer;}
+    </style>
+</head>
+<body>
+<div class="table-container">
+    <div class="table-div">
+        <div class="table-head-tr tr row-box">
+            <div class="td">ID</div>
+            <div class="td">姓名</div>
+            <div class="td">性别性别性别性别性别</div>
+            <div class="td flex1">工作</div>
+            <div class="td">操作</div>
+        </div>
+        
+        <div class="table-body row-box">
+            <div class="col flex0">
+                <div class="th">ID</div>
+                <div class="td" v-for="item in data.idArray">{{item}}</div>
+                <!-- <div class="td">2</div> -->
+            </div>
+            <div class="col flex0">
+                <div class="th">姓名</div>
+                <div class="td" v-for="item in data.nameArray">
+                    <span class="text-overflow">{{item}}</span>
+                </div>
+                <!-- <div class="td">
+                    <span class="text-overflow">小红小红小红小红小红</span>
+                </div> -->
+            </div>
+            <div class="col flex0">
+                <div class="th">性别</div>
+                <div class="td" v-for="item in data.sexArray">
+                    <span>{{item}}</span>
+                </div>
+                <!-- <div class="td">
+                    <span>女</span>
+                </div> -->
+            </div>
+            <div class="col flex1">
+                <div class="th">工作</div>
+                <div class="td" v-for="item in data.jobArray">
+                    <div class="td-div">
+                        <span class="text-overflow">{{item}}</span>
+                    </div>
+                </div>
+                <!-- <div class="td">
+                    <div class="text-overflow">销售</div>
+                </div> -->
+            </div>
+            <div class="col flex0">
+                <div class="th">操作</div>
+                <div class="td" v-for="item in data.idArray">
+                    <span @click.stop="edit(item)">编辑</span> / <span @click.stop="del(item)">删除</span>
+                </div>
+                <!-- <div class="td">编辑/删除</div> -->
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    const log = console.log;
+    
+    var main = new Vue({
+        el:'.table-container',
+        data:{
+            list:[
+                {id:1,name:'小敏',sex:'女',job:'学生'},
+                {id:2,name:'小红',sex:'女',job:'销售'},
+            ],
+            data:{
+                idArray:[],
+                nameArray:[],
+                sexArray:[],
+                jobArray:[],
+            }
+            
+        },
+        methods:{
+            init() {
+                this.formatList();
+            },
+            formatList() {
+                var list = this.list;
+                let idArray = [];
+                let nameArray = [];
+                let sexArray = [];
+                let jobArray = [];
+                for (let i = 0; i < list.length; i++) {
+                    idArray.push(list[i].id);
+                    nameArray.push(list[i].name);
+                    sexArray.push(list[i].sex);
+                    jobArray.push(list[i].job);
+                }
+                this.data.idArray = idArray;
+                this.data.nameArray = nameArray;
+                this.data.sexArray = sexArray;
+                this.data.jobArray = jobArray;
+            },
+            edit(id) {
+                log(id,'id----edit');
+            },
+            del(id) {
+                log(id,'id----del');
+            }
+        },
+        created() {
+            this.init();
+        },
+    });
+</script>
+
+</body>
+</html>

@@ -13,94 +13,60 @@
     .flex1{flex:1 1 auto;}
     .flex0{flex-shrink:0;}
     .text-overflow{overflow: hidden;text-overflow: ellipsis;display: -webkit-box;white-space: nowrap;-webkit-line-clamp:2;-webkit-box-orient: vertical; }
-    body{width: 100%;/* text-align: center; */}
+    
 
-    .table-container{width: 500px;border: 1px solid;overflow: hidden;}
-    .table-container>.table-div{position: relative;width: 100%;font-size: 0px;}
-    .table-div>.table-body{position: relative;width: 100%;}
-    .table-body>.col{display: inline-block;text-align: left;}
-    .table-body>.col>.th span, .table-body>.col>.td span{font-size: 14px;}
-    .table-body>.col:first-child{min-width: 10%;}
-    .table-body>.col:nth-child(2){min-width: 10%;}
-    .table-body>.col:nth-child(3){min-width: 10%;}
-    .table-body>.col:nth-child(4){min-width: 10%;}
-    .table-body>.col:last-child{min-width: 10%;}
-    .table-body>.col>.th{position: relative;padding:5px 10px;border-right: 1px solid;border-bottom: 1px solid;font-size: 18px;font-weight: 600;}
-    .table-body>.col>.td{position: relative;padding:5px 10px;border-right: 1px solid;border-bottom: 1px solid;font-size: 14px;}
-    .table-body>.col>.td>.td-div{font-size: 0px;}
-    .table-body>.col>.td>.td-div span{font-size: 14px;}
-    .table-body>.col>.td>.td-div span.text-overflow{width: 100%;display: inline-block;}
-    .table-body>.col>.td:hover{cursor: pointer;}
+    /* .table-container{width: 500px;overflow: hidden;border: 1px solid;}
+    .table-container>.table-div{position: relative;width: 100%;font-size: 0px;} */
+
+    .table-div{position: relative;width: 100%;font-size: 0px;border: 1px solid;}
+    .table-div>.tr{border-bottom:1px solid;}
+    .table-div>.tr:last-child{border-bottom:none;}
+    .table-div>.tr>.td{display: inline-block;font-size: 14px;border-right: 1px solid;}
+    .table-div>.tr>.td:last-child{border-right:none;}
+
     </style>
 </head>
 <body>
-<div class="table-container">
+<!-- <div class="table-container"> -->
     <div class="table-div">
-        <div class="table-head-tr tr row-box">
-            <div class="td">ID</div>
-            <div class="td">姓名</div>
-            <div class="td">性别性别性别性别性别</div>
-            <div class="td flex1">工作</div>
-            <div class="td">操作</div>
+        <div class="tr row-box head-tr">
+            <div class="td" :style="{'min-width':'50px','width':width.id+'px'}">ID</div>
+            <div class="td" :style="{'min-width':'100px','width':width.name+'px'}">姓名</div>
+            <div class="td" :style="{'min-width':'50px','width':width.sex+'px'}">性别</div>
+            <div class="td flex1" :style="{'min-width':'300px','width':width.job+'px'}">工作</div>
+            <div class="td" :style="{'min-width':'150px','width':width.caozuo+'px'}">操作</div>
         </div>
         
-        <div class="table-body row-box">
-            <div class="col flex0">
-                <div class="th">ID</div>
-                <div class="td" v-for="item in data.idArray">{{item}}</div>
-                <!-- <div class="td">2</div> -->
+        <div class="tr row-box body-tr">
+            <div class="td text-overflow" :style="{'min-width':'50px','width':width.id+'px'}">001</div>
+            <div class="td text-overflow" :style="{'min-width':'100px','width':width.name+'px'}">小明</div>
+            <div class="td text-overflow" :style="{'min-width':'50px','width':width.sex+'px'}">男</div>
+            <div class="td flex1 text-overflow" :style="{'min-width':'300px','width':width.job+'px'}">学生学生学生学生学生学生学生学生学生学生学生学生学生</div>
+            <div class="td text-overflow" :style="{'min-width':'150px','width':width.caozuo+'px'}">
+                <span @click.stop="edit(item)">编辑</span> / <span @click.stop="del(item)">删除</span>
             </div>
-            <div class="col flex0">
-                <div class="th">姓名</div>
-                <div class="td" v-for="item in data.nameArray">
-                    <span class="text-overflow">{{item}}</span>
-                </div>
-                <!-- <div class="td">
-                    <span class="text-overflow">小红小红小红小红小红</span>
-                </div> -->
-            </div>
-            <div class="col flex0">
-                <div class="th">性别</div>
-                <div class="td" v-for="item in data.sexArray">
-                    <span>{{item}}</span>
-                </div>
-                <!-- <div class="td">
-                    <span>女</span>
-                </div> -->
-            </div>
-            <div class="col flex1">
-                <div class="th">工作</div>
-                <div class="td" v-for="item in data.jobArray">
-                    <div class="td-div">
-                        <span class="text-overflow">{{item}}</span>
-                    </div>
-                </div>
-                <!-- <div class="td">
-                    <div class="text-overflow">销售</div>
-                </div> -->
-            </div>
-            <div class="col flex0">
-                <div class="th">操作</div>
-                <div class="td" v-for="item in data.idArray">
-                    <span @click.stop="edit(item)">编辑</span> / <span @click.stop="del(item)">删除</span>
-                </div>
-                <!-- <div class="td">编辑/删除</div> -->
-            </div>
-            
         </div>
+
     </div>
-</div>
+<!-- </div> -->
 
 <script>
     const log = console.log;
     
     var main = new Vue({
-        el:'.table-container',
+        el:'.table-div',
         data:{
             list:[
                 {id:1,name:'小敏',sex:'女',job:'学生'},
                 {id:2,name:'小红',sex:'女',job:'销售'},
             ],
+            width:{
+                id:0,
+                name:0,
+                sex:0,
+                job:0,
+                caozuo:0,
+            },
             data:{
                 idArray:[],
                 nameArray:[],
@@ -111,7 +77,30 @@
         },
         methods:{
             init() {
-                this.formatList();
+                this.setWidth();
+            },
+            setWidth() {
+                var width = document.getElementsByClassName('table-div')[0].offsetWidth;
+                console.log(width,'width');
+                this.width.id = width*0.1;
+                this.width.name = width*0.2;
+                this.width.sex = width*0.1;
+                this.width.caozuo = width*0.2;
+                if(this.width.id<100){
+                    this.width.id = 100;
+                }
+                if(this.width.name<200){
+                    this.width.name = 200;
+                }
+                if(this.width.sex<100){
+                    this.width.sex = 100;
+                }
+                if(this.width.caozuo<200){
+                    this.width.caozuo = 200;
+                }
+                this.width.job = width-(this.width.id+this.width.name+this.width.sex+this.width.caozuo);
+                console.log(this.width.job,'this.width.job');
+                
             },
             formatList() {
                 var list = this.list;
